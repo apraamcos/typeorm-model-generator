@@ -19,6 +19,9 @@
     "type": "git",
     "url": "https://github.com/apraamcos/typeorm-model-generator"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "author": "APRA",
   "license": "MIT",
   "dependencies": {
