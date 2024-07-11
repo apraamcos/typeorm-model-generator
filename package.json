@@ -29,7 +29,8 @@
     "pluralize": "^8.0.0",
     "prettier": "^2.3.2",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "npm:@apraamcos/typeorm@0.9.91",
+    "pg":"8.12.0",
+    "typeorm": "0.3.20",
     "yargs": "^16.2.0"
   },
   "devDependencies": {
