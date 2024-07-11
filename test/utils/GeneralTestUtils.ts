@@ -6,11 +6,11 @@ import IGenerationOptions, {
     getDefaultGenerationOptions
 } from "../../src/IGenerationOptions";
 import IConnectionOptions from "../../src/IConnectionOptions";
-import MssqlDriver from "../../src/drivers/MssqlDriver";
-import MariaDbDriver from "../../src/drivers/MariaDbDriver";
+// import MssqlDriver from "../../src/drivers/MssqlDriver";
+// import MariaDbDriver from "../../src/drivers/MariaDbDriver";
 import PostgresDriver from "../../src/drivers/PostgresDriver";
-import OracleDriver from "../../src/drivers/OracleDriver";
-import MysqlDriver from "../../src/drivers/MysqlDriver";
+// import OracleDriver from "../../src/drivers/OracleDriver";
+// import MysqlDriver from "../../src/drivers/MysqlDriver";
 import { assertUnreachable } from "../../src/Utils";
 
 export function getGenerationOptions(resultsPath: string): IGenerationOptions {
@@ -19,47 +19,47 @@ export function getGenerationOptions(resultsPath: string): IGenerationOptions {
     return retVal;
 }
 
-export async function createMSSQLModels(
-    filesOrgPath: string
-): Promise<IConnectionOptions> {
-    const driver = new MssqlDriver();
-    const connectionOptions = getTomgConnectionOptions("mssql");
-    await driver.ConnectToServer(connectionOptions);
-    connectionOptions.databaseNames = [String(process.env.MSSQL_Database)];
+// export async function createMSSQLModels(
+//     filesOrgPath: string
+// ): Promise<IConnectionOptions> {
+//     const driver = new MssqlDriver();
+//     const connectionOptions = getTomgConnectionOptions("mssql");
+//     await driver.ConnectToServer(connectionOptions);
+//     connectionOptions.databaseNames = [String(process.env.MSSQL_Database)];
 
-    if (await driver.CheckIfDBExists(String(process.env.MSSQL_Database))) {
-        await driver.DropDB(String(process.env.MSSQL_Database));
-    }
-    await driver.CreateDB(String(process.env.MSSQL_Database));
-    await driver.DisconnectFromServer();
+//     if (await driver.CheckIfDBExists(String(process.env.MSSQL_Database))) {
+//         await driver.DropDB(String(process.env.MSSQL_Database));
+//     }
+//     await driver.CreateDB(String(process.env.MSSQL_Database));
+//     await driver.DisconnectFromServer();
 
-    const connOpt: ConnectionOptions = {
-        database: String(process.env.MSSQL_Database),
-        host: String(process.env.MSSQL_Host),
-        password: String(process.env.MSSQL_Password),
-        type: "mssql",
-        username: String(process.env.MSSQL_Username),
-        port: Number(process.env.MSSQL_Port),
-        dropSchema: true,
-        synchronize: false,
-        entities: [path.resolve(filesOrgPath, "*.ts")],
-        name: "mssql"
-    };
+//     const connOpt: ConnectionOptions = {
+//         database: String(process.env.MSSQL_Database),
+//         host: String(process.env.MSSQL_Host),
+//         password: String(process.env.MSSQL_Password),
+//         type: "mssql",
+//         username: String(process.env.MSSQL_Username),
+//         port: Number(process.env.MSSQL_Port),
+//         dropSchema: true,
+//         synchronize: false,
+//         entities: [path.resolve(filesOrgPath, "*.ts")],
+//         name: "mssql"
+//     };
 
-    const schemas = "dbo,sch1,sch2";
-    const conn = await createConnection(connOpt);
-    const queryRunner = conn.createQueryRunner();
-    await Promise.all(
-        schemas.split(",").map(sch => queryRunner.createSchema(sch, true))
-    );
-    await conn.synchronize();
+//     const schemas = "dbo,sch1,sch2";
+//     const conn = await createConnection(connOpt);
+//     const queryRunner = conn.createQueryRunner();
+//     await Promise.all(
+//         schemas.split(",").map(sch => queryRunner.createSchema(sch, true))
+//     );
+//     await conn.synchronize();
 
-    if (conn.isConnected) {
-        await conn.close();
-    }
+//     if (conn.isConnected) {
+//         await conn.close();
+//     }
 
-    return connectionOptions;
-}
+//     return connectionOptions;
+// }
 
 export async function createPostgresModels(
     filesOrgPath: string
@@ -103,134 +103,134 @@ export async function createPostgresModels(
     return connectionOptions;
 }
 
-export async function createSQLiteModels(
-    filesOrgPath: string
-): Promise<IConnectionOptions> {
-    const connectionOptions = getTomgConnectionOptions("sqlite");
+// export async function createSQLiteModels(
+//     filesOrgPath: string
+// ): Promise<IConnectionOptions> {
+//     const connectionOptions = getTomgConnectionOptions("sqlite");
 
-    const connOpt: ConnectionOptions = {
-        database: String(process.env.SQLITE_Database),
-        type: "sqlite",
-        dropSchema: true,
-        synchronize: false,
-        entities: [path.resolve(filesOrgPath, "*.ts")],
-        name: "sqlite"
-    };
+//     const connOpt: ConnectionOptions = {
+//         database: String(process.env.SQLITE_Database),
+//         type: "sqlite",
+//         dropSchema: true,
+//         synchronize: false,
+//         entities: [path.resolve(filesOrgPath, "*.ts")],
+//         name: "sqlite"
+//     };
 
-    const conn = await createConnection(connOpt);
-    await conn.synchronize();
+//     const conn = await createConnection(connOpt);
+//     await conn.synchronize();
 
-    if (conn.isConnected) {
-        await conn.close();
-    }
+//     if (conn.isConnected) {
+//         await conn.close();
+//     }
 
-    return connectionOptions;
-}
+//     return connectionOptions;
+// }
 
-export async function createMysqlModels(
-    filesOrgPath: string
-): Promise<IConnectionOptions> {
-    const driver = new MysqlDriver();
-    const connectionOptions = getTomgConnectionOptions("mysql");
-    await driver.ConnectToServer(connectionOptions);
+// export async function createMysqlModels(
+//     filesOrgPath: string
+// ): Promise<IConnectionOptions> {
+//     const driver = new MysqlDriver();
+//     const connectionOptions = getTomgConnectionOptions("mysql");
+//     await driver.ConnectToServer(connectionOptions);
 
-    if (await driver.CheckIfDBExists(String(process.env.MYSQL_Database))) {
-        await driver.DropDB(String(process.env.MYSQL_Database));
-    }
-    await driver.CreateDB(String(process.env.MYSQL_Database));
-    await driver.DisconnectFromServer();
+//     if (await driver.CheckIfDBExists(String(process.env.MYSQL_Database))) {
+//         await driver.DropDB(String(process.env.MYSQL_Database));
+//     }
+//     await driver.CreateDB(String(process.env.MYSQL_Database));
+//     await driver.DisconnectFromServer();
 
-    const connOpt: ConnectionOptions = {
-        database: String(process.env.MYSQL_Database),
-        host: String(process.env.MYSQL_Host),
-        password: String(process.env.MYSQL_Password),
-        type: "mysql",
-        username: String(process.env.MYSQL_Username),
-        port: Number(process.env.MYSQL_Port),
-        dropSchema: true,
-        synchronize: true,
-        entities: [path.resolve(filesOrgPath, "*.ts")],
-        name: "mysql"
-    };
-    const conn = await createConnection(connOpt);
+//     const connOpt: ConnectionOptions = {
+//         database: String(process.env.MYSQL_Database),
+//         host: String(process.env.MYSQL_Host),
+//         password: String(process.env.MYSQL_Password),
+//         type: "mysql",
+//         username: String(process.env.MYSQL_Username),
+//         port: Number(process.env.MYSQL_Port),
+//         dropSchema: true,
+//         synchronize: true,
+//         entities: [path.resolve(filesOrgPath, "*.ts")],
+//         name: "mysql"
+//     };
+//     const conn = await createConnection(connOpt);
 
-    if (conn.isConnected) {
-        await conn.close();
-    }
+//     if (conn.isConnected) {
+//         await conn.close();
+//     }
 
-    return connectionOptions;
-}
-export async function createMariaDBModels(
-    filesOrgPath: string
-): Promise<IConnectionOptions> {
-    const driver = new MariaDbDriver();
-    const connectionOptions = getTomgConnectionOptions("mariadb");
-    await driver.ConnectToServer(connectionOptions);
+//     return connectionOptions;
+// }
+// export async function createMariaDBModels(
+//     filesOrgPath: string
+// ): Promise<IConnectionOptions> {
+//     const driver = new MariaDbDriver();
+//     const connectionOptions = getTomgConnectionOptions("mariadb");
+//     await driver.ConnectToServer(connectionOptions);
 
-    if (await driver.CheckIfDBExists(String(process.env.MARIADB_Database))) {
-        await driver.DropDB(String(process.env.MARIADB_Database));
-    }
-    await driver.CreateDB(String(process.env.MARIADB_Database));
-    await driver.DisconnectFromServer();
+//     if (await driver.CheckIfDBExists(String(process.env.MARIADB_Database))) {
+//         await driver.DropDB(String(process.env.MARIADB_Database));
+//     }
+//     await driver.CreateDB(String(process.env.MARIADB_Database));
+//     await driver.DisconnectFromServer();
 
-    const connOpt: ConnectionOptions = {
-        database: String(process.env.MARIADB_Database),
-        host: String(process.env.MARIADB_Host),
-        password: String(process.env.MARIADB_Password),
-        type: "mariadb",
-        username: String(process.env.MARIADB_Username),
-        port: Number(process.env.MARIADB_Port),
-        dropSchema: true,
-        synchronize: true,
-        entities: [path.resolve(filesOrgPath, "*.ts")],
-        name: "mariadb"
-    };
-    const conn = await createConnection(connOpt);
+//     const connOpt: ConnectionOptions = {
+//         database: String(process.env.MARIADB_Database),
+//         host: String(process.env.MARIADB_Host),
+//         password: String(process.env.MARIADB_Password),
+//         type: "mariadb",
+//         username: String(process.env.MARIADB_Username),
+//         port: Number(process.env.MARIADB_Port),
+//         dropSchema: true,
+//         synchronize: true,
+//         entities: [path.resolve(filesOrgPath, "*.ts")],
+//         name: "mariadb"
+//     };
+//     const conn = await createConnection(connOpt);
 
-    if (conn.isConnected) {
-        await conn.close();
-    }
+//     if (conn.isConnected) {
+//         await conn.close();
+//     }
 
-    return connectionOptions;
-}
+//     return connectionOptions;
+// }
 
-export async function createOracleDBModels(
-    filesOrgPath: string
-): Promise<IConnectionOptions> {
-    const driver = new OracleDriver();
+// export async function createOracleDBModels(
+//     filesOrgPath: string
+// ): Promise<IConnectionOptions> {
+//     const driver = new OracleDriver();
 
-    const connectionOptions = getTomgConnectionOptions("oracle");
+//     const connectionOptions = getTomgConnectionOptions("oracle");
 
-    await driver.ConnectToServer(connectionOptions);
-    connectionOptions.user = String(process.env.ORACLE_Username);
-    connectionOptions.password = String(process.env.ORACLE_Password);
+//     await driver.ConnectToServer(connectionOptions);
+//     connectionOptions.user = String(process.env.ORACLE_Username);
+//     connectionOptions.password = String(process.env.ORACLE_Password);
 
-    if (await driver.CheckIfDBExists(String(process.env.ORACLE_Username))) {
-        await driver.DropDB(String(process.env.ORACLE_Username));
-    }
-    await driver.CreateDB(String(process.env.ORACLE_Username));
-    await driver.DisconnectFromServer();
+//     if (await driver.CheckIfDBExists(String(process.env.ORACLE_Username))) {
+//         await driver.DropDB(String(process.env.ORACLE_Username));
+//     }
+//     await driver.CreateDB(String(process.env.ORACLE_Username));
+//     await driver.DisconnectFromServer();
 
-    const connOpt: ConnectionOptions = {
-        database: String(process.env.ORACLE_Database),
-        sid: String(process.env.ORACLE_Database),
-        host: String(process.env.ORACLE_Host),
-        password: String(process.env.ORACLE_Password),
-        type: "oracle",
-        username: String(process.env.ORACLE_Username),
-        port: Number(process.env.ORACLE_Port),
-        synchronize: true,
-        entities: [path.resolve(filesOrgPath, "*.ts")],
-        name: "oracle"
-    };
-    const conn = await createConnection(connOpt);
+//     const connOpt: ConnectionOptions = {
+//         database: String(process.env.ORACLE_Database),
+//         sid: String(process.env.ORACLE_Database),
+//         host: String(process.env.ORACLE_Host),
+//         password: String(process.env.ORACLE_Password),
+//         type: "oracle",
+//         username: String(process.env.ORACLE_Username),
+//         port: Number(process.env.ORACLE_Port),
+//         synchronize: true,
+//         entities: [path.resolve(filesOrgPath, "*.ts")],
+//         name: "oracle"
+//     };
+//     const conn = await createConnection(connOpt);
 
-    if (conn.isConnected) {
-        await conn.close();
-    }
+//     if (conn.isConnected) {
+//         await conn.close();
+//     }
 
-    return connectionOptions;
-}
+//     return connectionOptions;
+// }
 
 export function compileTsFiles(
     fileNames: string[],
@@ -289,18 +289,18 @@ export function createModelsInDb(
     filesOrgPathJS: string
 ): Promise<IConnectionOptions> {
     switch (dbDriver) {
-        case "sqlite":
-            return createSQLiteModels(filesOrgPathJS);
+        // case "sqlite":
+        //     return createSQLiteModels(filesOrgPathJS);
         case "postgres":
             return createPostgresModels(filesOrgPathJS);
-        case "mysql":
-            return createMysqlModels(filesOrgPathJS);
-        case "mariadb":
-            return createMariaDBModels(filesOrgPathJS);
-        case "mssql":
-            return createMSSQLModels(filesOrgPathJS);
-        case "oracle":
-            return createOracleDBModels(filesOrgPathJS);
+        // case "mysql":
+        //     return createMysqlModels(filesOrgPathJS);
+        // case "mariadb":
+        //     return createMariaDBModels(filesOrgPathJS);
+        // case "mssql":
+        //     return createMSSQLModels(filesOrgPathJS);
+        // case "oracle":
+        //     return createOracleDBModels(filesOrgPathJS);
         default:
             console.log(`Unknown engine type`);
             throw new Error("Unknown engine type");
