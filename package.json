@@ -1,6 +1,6 @@
 {
   "name": "@apraamcos/typeorm-model-generator",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Generates models for TypeORM from existing databases.",
   "bin": "bin/typeorm-model-generator",
   "main": "./dist/src/library.js",
