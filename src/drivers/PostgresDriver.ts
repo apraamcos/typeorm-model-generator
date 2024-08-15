@@ -682,7 +682,7 @@ export default class PostgresDriver extends AbstractDriver {
         const resp = await this.Connection.query(
             `SELECT datname FROM pg_database  WHERE datname  ='${dbName}' `
         );
-        return resp.rowCount > 0;
+        return !!resp.rowCount && resp.rowCount > 0;
     }
 
     private static ReturnDefaultValueFunction(

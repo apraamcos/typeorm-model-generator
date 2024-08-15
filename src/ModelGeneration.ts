@@ -27,11 +27,6 @@ export default function modelGenerationPhase(
     }
     let entitiesPath = resultPath;
     if (!generationOptions.noConfigs) {
-        const tsconfigPath = path.resolve(resultPath, "tsconfig.json");
-        const typeormConfigPath = path.resolve(resultPath, "ormconfig.json");
-
-        createTsConfigFile(tsconfigPath);
-        createTypeOrmConfig(typeormConfigPath, connectionOptions);
         entitiesPath = path.resolve(resultPath, "./entities");
         if (!fs.existsSync(entitiesPath)) {
             fs.mkdirSync(entitiesPath);
@@ -258,47 +253,5 @@ function createHandlebarsHelpers(generationOptions: IGenerationOptions): void {
         lte: (v1, v2) => v1 <= v2,
         ne: (v1, v2) => v1 !== v2,
         or: (v1, v2) => v1 || v2,
-    });
-}
-
-function createTsConfigFile(tsconfigPath: string): void {
-    if (fs.existsSync(tsconfigPath)) {
-        console.warn(
-            `\x1b[33m[${new Date().toLocaleTimeString()}] WARNING: Skipping generation of tsconfig.json file. File already exists. \x1b[0m`
-        );
-        return;
-    }
-    const templatePath = path.resolve(__dirname, "templates", "tsconfig.mst");
-    const template = fs.readFileSync(templatePath, "utf-8");
-    const compliedTemplate = Handlebars.compile(template, {
-        noEscape: true,
-    });
-    const rendered = compliedTemplate({});
-    const formatted = Prettier.format(rendered, { parser: "json" });
-    fs.writeFileSync(tsconfigPath, formatted, {
-        encoding: "utf-8",
-        flag: "w",
-    });
-}
-function createTypeOrmConfig(
-    typeormConfigPath: string,
-    connectionOptions: IConnectionOptions
-): void {
-    if (fs.existsSync(typeormConfigPath)) {
-        console.warn(
-            `\x1b[33m[${new Date().toLocaleTimeString()}] WARNING: Skipping generation of ormconfig.json file. File already exists. \x1b[0m`
-        );
-        return;
-    }
-    const templatePath = path.resolve(__dirname, "templates", "ormconfig.mst");
-    const template = fs.readFileSync(templatePath, "utf-8");
-    const compiledTemplate = Handlebars.compile(template, {
-        noEscape: true,
-    });
-    const rendered = compiledTemplate(connectionOptions);
-    const formatted = Prettier.format(rendered, { parser: "json" });
-    fs.writeFileSync(typeormConfigPath, formatted, {
-        encoding: "utf-8",
-        flag: "w",
     });
 }
