@@ -1,7 +1,7 @@
 import {
     WithLengthColumnType,
     WithPrecisionColumnType,
-    WithWidthColumnType,
+    UnsignedColumnType,
 } from "typeorm/driver/types/ColumnTypes";
 import { JoinColumnOptions, RelationOptions } from "typeorm";
 import { DataTypeDefaults } from "typeorm/driver/types/DataTypeDefaults";
@@ -22,7 +22,7 @@ export default abstract class AbstractDriver {
 
     public abstract defaultValues: DataTypeDefaults;
 
-    public ColumnTypesWithWidth: WithWidthColumnType[] = [
+    public ColumnTypesWithWidth: UnsignedColumnType[] = [
         "tinyint",
         "smallint",
         "mediumint",
