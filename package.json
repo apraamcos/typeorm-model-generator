@@ -72,6 +72,9 @@
       "pre-commit": "npm run prettier && git update-index --again"
     }
   },
+  "overrides": {
+    "lodash": "4.17.23"
+  },
   "nyc": {
     "check-coverage": false,
     "all": true,
